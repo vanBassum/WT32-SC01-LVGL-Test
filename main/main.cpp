@@ -9,11 +9,7 @@
 #include "lwip/apps/sntp.h"
 #include "lwip/apps/sntp_opts.h"
 #include <string.h>
-#include "lib/com/eth/listener.h"
-#include "lib/com/eth/tcpsocket.h"
-#include "lib/com/eth/udpsocket.h"
-#include "lib/protocol/client.h"
-#include "lib/protocol/discovery.h"
+
 #include "driver/gpio.h"
 #include "esp_flash_partitions.h"
 #include "esp_partition.h"
@@ -21,10 +17,6 @@
 
 #define SSID "vanBassum"
 #define PSWD "pedaalemmerzak"
-
-//#define SSID "Koole Controls"
-//#define PSWD "K@u5tGD!8Ug&X!rc"
-
 
 
 
@@ -47,33 +39,6 @@ esp_err_t event_handler(void *ctx, system_event_t *event)
     return ESP_OK;
 }
 
-
-
-std::vector<uint8_t> OnMessageReceived(JBV::Client* client, std::vector<uint8_t> rawRequest)
-{
-	std::string request(rawRequest.begin(), rawRequest.end()); 
-	std::string response = "Command not supported"; 
-	ESP_LOGI("Main", "Received CMD '%s'", request.c_str());
-	
-
-	if (request.rfind("echo", 0) == 0)
-	{
-		response = request.substr(5);
-	}
-	else if (request.rfind("led on", 0) == 0)
-	{
-		gpio_set_level(GPIO_NUM_2, 1);
-		response = "Led on";
-	}
-	else if (request.rfind("led off", 0) == 0)
-	{
-		gpio_set_level(GPIO_NUM_2, 0);
-		response = "Led off";
-	}
-
-
-	return std::vector<uint8_t>(response.begin(), response.end());
-}
 
 
 void app_main(void)
@@ -100,76 +65,12 @@ void app_main(void)
 	sntp_setservername(0, "pool.ntp.org");
 	sntp_init();
 	
-	uint64_t addr = 0;
-	esp_read_mac((uint8_t*)&addr, ESP_MAC_WIFI_STA);
 
-	//Setup client
-	JBV::Client client(addr, SoftwareID::TestApp, Version(0, 0, 0));
-	client.HandleRequest.Bind(&OnMessageReceived);
-
-	//Add TCP listener
-	//TCPListener listener;
-	//client.AddListener(&listener);
 	
-	//Add UDP Broadcast socket
-	UDPSocket sock;
-	sock.Connect("255.255.255.255", 51100);
-	client.AddConnection(&sock);
-	
-
-	gpio_set_direction(GPIO_NUM_2, GPIO_MODE_OUTPUT);
-	gpio_set_level(GPIO_NUM_2, 0);
-	
-
-	while (1)
-	{
-		
-		
-		//ESP_LOGI("Main", "xPortGetFreeHeapSize() = %08x", xPortGetFreeHeapSize());
-		
-		
-		vTaskDelay(5000 / portTICK_PERIOD_MS);
-	}
-	
-	/*
-	UDPSocket sock;
 	
 	
 	
 
-	return;
-	
-	
-	
-	ESPNOW espnow;
-	espnow.Init();
-	espnow.OnBroadcast.Bind(&ESPNOWBroadcast);
-	
-	
-	
-	
-	gpio_set_direction(GPIO_NUM_2, GPIO_MODE_OUTPUT);
-	gpio_set_level(GPIO_NUM_2, 1);
-	
-	const char c1 = '1';
-	const char c0 = '0';
-	
-	bool wap = false;
-	while (1)
-	{
-		
-		if (wap)
-			espnow.SendBroadcast((uint8_t *)&c1, 1);
-		else
-			espnow.SendBroadcast((uint8_t *)&c0, 1);
-			
-		
-		wap = !wap;
-		vTaskDelay(1000 / portTICK_PERIOD_MS);
-		
-		
-	}
-	*/
 }
 
 
