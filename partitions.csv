@@ -1,0 +1,25 @@
+# Espressif ESP32 Partition Table
+# Name,     Type, 	SubType, 	Offset,  	Size
+nvs,        data,   nvs,    	0x009000,   0x6000,
+otadata,    data,   ota,    	0x00f000,   0x2000,
+phy_init,   data,   phy,    	0x011000,   0x1000,
+
+
+log,        data,   nvs,    	0x12000,	0xE000,
+
+ota_0,    	0,      ota_0,		0x200000,   1M,
+ota_1,    	0,      ota_1,		0x300000,   1M,
+
+
+
+
+
+# ------------ notes from bas ------------
+# Data above 0x9000 is hands off for the application
+# Not known what exactely resides over there.
+# Partitiontable and bootloader are for example at 0x8000 and 0x1000 respectively.
+#
+# App partitions have to be 64K aligned and are recommended to start at 0x10000.
+# Data partiotions have to be 4K aligned. (0x1000)
+
+# esp_wroom_32 = 32Mbits or 4MB	(0x400000)
