@@ -1,0 +1,3 @@
+[submodule "main/lib"]
+	path = main/lib
+	url = https://github.com/vanBassum/CPP_Library.git
