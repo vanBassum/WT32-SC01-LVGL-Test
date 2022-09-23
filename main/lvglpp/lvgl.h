@@ -10,7 +10,7 @@
 #include "screen.h"
 #include "widget.h"
 #include "button.h"
-//#include "label.h"
+#include "label.h"
 
 namespace LVGL
 {
@@ -114,7 +114,7 @@ namespace LVGL
 		lvglTimer.Start();
 	
 		lvglTask.SetCallback(&GuiTask);
-		lvglTask.RunPinned("LVGL", 5, 2048, 0, NULL);
+		lvglTask.RunPinned("LVGL", 5, 1024 * 8, 0, NULL);
 		
 		ActScreen.InitActualScreen();
 	}

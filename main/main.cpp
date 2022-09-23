@@ -34,6 +34,8 @@ esp_err_t event_handler(void *ctx, system_event_t *event)
     return ESP_OK;
 }
 
+
+
 void ButtonClicked(LVGL::Button* sender)
 {
 	ESP_LOGI("Button", "Clicked");
@@ -43,12 +45,22 @@ void app_main(void)
 {
 	nvs_flash_init();
 	
+
 	LVGL::Init();
 	
+	LVGL::Label label;
 	LVGL::Button button;
+	LVGL::Button button2;
+
+	LVGL::ActScreen.AddWidget(button);
 	button.OnClicked.Bind(ButtonClicked);
 	
-	LVGL::ActScreen.AddWidget(button);
+	LVGL::ActScreen.AddWidget(button2);
+	button2.SetPos(0, 100);
+	
+	button.AddWidget(label);
+	//label.SetAlignment(LV_ALIGN_CENTER);
+	//label.SetText("Yeah");
 	
 	
 	while (1)
