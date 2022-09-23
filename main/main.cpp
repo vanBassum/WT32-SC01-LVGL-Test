@@ -17,34 +17,42 @@
 #include "driver/gpio.h"
 #include "driver/spi_master.h"
 #include "driver/spi_common.h"
-
-//#define CONFIG_LV_TFT_DISPLAY_CONTROLLER_ST7796S 1
-//#define CONFIG_LV_TOUCH_CONTROLLER_FT6X06 1
-
 #include "lvgl/lvgl.h"
 #include "lvgl_helpers.h"
-
 #define TAG "MAIN"
 
-
+/*
+ * For this to work, use menuconfig to define the right screen and add following defines to lvgl_helpers.h
+ * #define LV_HOR_RES_MAX 320
+ * #define LV_VER_RES_MAX 480
+ * #define SPI_HOST_MAX 3
+ */
 
 static FreeRTOS::Mutex lvglMutex;
 static FreeRTOS::Timer lvglTimer;
-
-
+static FreeRTOS::Task lvglTask;
 
 extern "C" {
    void app_main();
 }
-
-
-
 
 static void lv_tick_task(FreeRTOS::Timer* timer)
 {
 	lv_tick_inc(1000);
 }
 
+
+static void lv_tick_task(FreeRTOS::Task* task)
+{
+	while (1)
+	{
+		lvglMutex.Take();
+		lv_timer_handler(); /* let the GUI do its work */
+		lvglMutex.Give();
+		vTaskDelay(1);
+	}
+	
+}
 
 void InitLVGL()
 {
@@ -82,6 +90,7 @@ void InitLVGL()
 	lvglTimer.SetCallback(&lv_tick_task);
 	lvglTimer.Start();
 	
+	lvglTask.SetCallback()
 	
 	
 	/*** Create simple label and show LVGL version ***/
@@ -104,6 +113,13 @@ void InitLVGL()
 		vTaskDelay(1);
 	}
 }
+
+void DrawSomething()
+{
+	
+	
+}
+
 
 esp_err_t event_handler(void *ctx, system_event_t *event)
 {
