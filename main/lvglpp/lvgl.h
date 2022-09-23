@@ -23,16 +23,18 @@ namespace LVGL
 	{
 		while (1) 
 		{
-			vTaskDelay(1);
-			lvglMutex.Take();
-			lv_task_handler();
-			lvglMutex.Give();
+			vTaskDelay(pdMS_TO_TICKS(10));
+			if (lvglMutex.Take())
+			{
+				lv_task_handler();
+				lvglMutex.Give();
+			}
 		}
 	}
 	
 	static void Tick(FreeRTOS::Timer* t)
 	{
-		lv_tick_inc(t->GetPeriod());
+		lv_tick_inc(pdTICKS_TO_MS(t->GetPeriod()));
 	}
 		
 	
@@ -107,12 +109,12 @@ namespace LVGL
 	
 		/* Create and start a periodic timer interrupt to call lv_tick_inc */
 	
-		lvglTimer.Init("lvgl", 1000 / portTICK_PERIOD_MS, true);
+		lvglTimer.Init("lvgl", pdMS_TO_TICKS(100), true);
 		lvglTimer.SetCallback(&Tick);
 		lvglTimer.Start();
 	
 		lvglTask.SetCallback(&GuiTask);
-		lvglTask.Run("LVGL", 5, 2048, NULL);
+		lvglTask.RunPinned("LVGL", 5, 2048, 0, NULL);
 		
 		ActScreen.InitActualScreen();
 	}
