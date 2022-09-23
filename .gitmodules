@@ -4,3 +4,6 @@
 [submodule "components/lib"]
 	path = components/lib
 	url = https://github.com/vanBassum/ESP_Components.git
+[submodule "components/lvgl_esp32_drivers"]
+	path = components/lvgl_esp32_drivers
+	url = https://github.com/lvgl/lvgl_esp32_drivers.git
