@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<VisualGDBProjectSettings2 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<VisualGDBProjectSettings2 xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Project xsi:type="com.visualgdb.project.external.esp-idf">
     <CustomSourceDirectories>
       <Directories />
@@ -20,7 +20,7 @@
       <Version>
         <GCC>8.4.0</GCC>
         <GDB>8.1.0</GDB>
-        <Revision>5</Revision>
+        <Revision>6</Revision>
       </Version>
     </ToolchainID>
     <RelativeSourceDirectory>.</RelativeSourceDirectory>
@@ -71,7 +71,8 @@
           <Subdirectory>esp-idf/v4.3.1</Subdirectory>
           <Type>ESPIDF</Type>
         </IDFCheckout>
-        <COMPort>COM30</COMPort>
+        <COMPort>COM6</COMPort>
+        <BaudRate>921600</BaudRate>
         <SuppressTestPrerequisiteChecks>false</SuppressTestPrerequisiteChecks>
         <UseCCache>false</UseCCache>
         <DeviceID>ESP32</DeviceID>
@@ -112,7 +113,9 @@
   <Configurations>
     <VisualGDBConfiguration>
       <Name>Debug</Name>
-      <BuildSettingsExtension xsi:type="com.visualgdb.build.external.esp-idf.cmake.extension" />
+      <BuildSettingsExtension xsi:type="com.visualgdb.build.external.esp-idf.cmake.extension">
+        <SDKConfigFile>sdkconfig</SDKConfigFile>
+      </BuildSettingsExtension>
     </VisualGDBConfiguration>
     <VisualGDBConfiguration>
       <Name>Release</Name>
@@ -149,16 +152,19 @@
       <ExamineRegistersInRawFormat>true</ExamineRegistersInRawFormat>
       <DisableSignals>false</DisableSignals>
       <EnableAsyncExecutionMode>false</EnableAsyncExecutionMode>
+      <AsyncModeSupportsBreakpoints>true</AsyncModeSupportsBreakpoints>
+      <TemporaryBreakConsolidationTimeout>0</TemporaryBreakConsolidationTimeout>
       <EnableNonStopMode>false</EnableNonStopMode>
       <MaxBreakpointLimit>0</MaxBreakpointLimit>
       <EnableVerboseMode>true</EnableVerboseMode>
+      <EnablePrettyPrinters>false</EnablePrettyPrinters>
     </AdditionalGDBSettings>
     <DebugMethod>
       <ID>gdbstub</ID>
       <InterfaceID>com.sysprogs.espxx.bootloader</InterfaceID>
-      <InterfaceSerialNumber>022F7357</InterfaceSerialNumber>
+      <InterfaceSerialNumber>7&amp;175D1989&amp;0&amp;1</InterfaceSerialNumber>
       <Configuration xsi:type="com.visualgdb.edp.espxx.settings.gdbstub.esp32">
-        <COMPort>COM14</COMPort>
+        <COMPort>COM9</COMPort>
         <StubBaudRate>74880</StubBaudRate>
         <BootloaderBaudRate>115200</BootloaderBaudRate>
         <BootloaderResetDelay>50</BootloaderResetDelay>

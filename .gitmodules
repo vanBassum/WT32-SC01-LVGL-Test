@@ -1,9 +1,6 @@
-[submodule "main/lib"]
-	path = main/lib
-	url = https://github.com/vanBassum/CPP_Library.git
-[submodule "components/lvgl_esp32_drivers"]
-	path = components/lvgl_esp32_drivers
-	url = https://github.com/lvgl/lvgl_esp32_drivers.git
 [submodule "components/lvgl"]
 	path = components/lvgl
 	url = https://github.com/lvgl/lvgl.git
+[submodule "components/lib"]
+	path = components/lib
+	url = https://github.com/vanBassum/ESP_Components.git
