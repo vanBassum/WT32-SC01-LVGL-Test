@@ -18,8 +18,11 @@
 #include "driver/spi_master.h"
 #include "driver/spi_common.h"
 
+//#define CONFIG_LV_TFT_DISPLAY_CONTROLLER_ST7796S 1
+//#define CONFIG_LV_TOUCH_CONTROLLER_FT6X06 1
+
 #include "lvgl/lvgl.h"
-#include "st7796s.h"
+#include "lvgl_helpers.h"
 
 #define TAG "MAIN"
 
@@ -36,27 +39,6 @@ extern "C" {
 
 
 
-void lvgl_driver_init(void)
-{
-	st7796s_Init();
-	st7796s_Backlight(1);
-	
-	st7796s_WritePixel(0, 20, 0xAAAA);
-}
-
-
-
-
-void display_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p)
-{
-	//st7735s_flush(disp, area, color_p);
-	lv_disp_flush_ready(disp);
-}
-
-void touchpad_read(lv_indev_drv_t *indev_driver, lv_indev_data_t *data)
-{
-
-}
 
 static void lv_tick_task(FreeRTOS::Timer* timer)
 {
@@ -66,8 +48,8 @@ static void lv_tick_task(FreeRTOS::Timer* timer)
 
 void InitLVGL()
 {
-	static const uint16_t screenWidth = 480;
-	static const uint16_t screenHeight = 320;
+	static const uint16_t screenWidth = LV_HOR_RES_MAX;
+	static const uint16_t screenHeight = LV_VER_RES_MAX;
 	static lv_disp_draw_buf_t draw_buf;
 	static lv_color_t buf[screenWidth * 10];
 	
@@ -83,7 +65,7 @@ void InitLVGL()
 	lv_disp_drv_init(&disp_drv);
 	disp_drv.hor_res = screenWidth;
 	disp_drv.ver_res = screenHeight;
-	disp_drv.flush_cb = display_flush;
+	disp_drv.flush_cb = disp_driver_flush;
 	disp_drv.draw_buf = &draw_buf;
 	lv_disp_drv_register(&disp_drv);
 
@@ -91,7 +73,7 @@ void InitLVGL()
 	static lv_indev_drv_t indev_drv;
 	lv_indev_drv_init(&indev_drv);
 	indev_drv.type = LV_INDEV_TYPE_POINTER;
-	indev_drv.read_cb = touchpad_read;
+	indev_drv.read_cb = touch_driver_read;
 	lv_indev_drv_register(&indev_drv);
 	
 	/* Create and start a periodic timer interrupt to call lv_tick_inc */
