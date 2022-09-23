@@ -23,7 +23,7 @@ namespace LVGL
 	{
 		while (1) 
 		{
-			vTaskDelay(2);
+			vTaskDelay(1);
 			lvglMutex.Take();
 			lv_task_handler();
 			lvglMutex.Give();
